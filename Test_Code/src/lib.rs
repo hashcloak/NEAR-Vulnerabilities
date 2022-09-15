@@ -1,5 +1,5 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
-use near_sdk::near_bindgen;
+use near_sdk::{near_bindgen};
 
 #[near_bindgen]
 #[derive(Default, BorshDeserialize, BorshSerialize)]
@@ -10,7 +10,7 @@ pub struct Contract {
 #[near_bindgen]
 impl Contract {
     pub fn reentrancey(&mut self) {
-        panic!("Call Failed");
+        self.called += 1;
     }
 
     pub fn called_status(&self) -> u128 {

@@ -32,11 +32,14 @@ impl Contract {
         let new_balance = self.get_balance(&user) + balance;
         self.set_account(&user, &new_balance);
 
-        re_entrancy::ext(receiver_id).with_static_gas(env::prepaid_gas() - GAS_FOR_EXTERNAL_CALL).reentrancey().then(
-            Self::ext(env::current_account_id())
+        re_entrancy::ext(receiver_id)
+            .with_attached_deposit(balance).with_static_gas(env::prepaid_gas() - GAS_FOR_EXTERNAL_CALL)
+            .reentrancey()
+            .then(
+                Self::ext(env::current_account_id())
                 .with_static_gas(GAS_FOR_RESOLVE_CALLBACK)
                 .deposit_callback(user, balance),
-        );
+            );
     }
 
     #[private]
@@ -46,9 +49,9 @@ impl Contract {
             Promise::new(user.clone()).transfer(balance);
             let new_balance = self.get_balance(&user) - balance;
             self.set_account(&user, &new_balance);
+        } else {
+            log!("The Deposit was Successful");
         }
-
-        log!("The Deposit was Successful")
     }
 
     pub fn balance_of(&self, account_id: AccountId) -> U128 {
