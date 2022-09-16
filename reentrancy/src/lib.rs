@@ -25,17 +25,18 @@ impl Contract {
     }
 
     #[payable]
-    pub fn deposit(&mut self, receiver_id: AccountId) {
+    pub fn deposit(&mut self, receiver_id: AccountId) -> Promise{
         require!(env::prepaid_gas() > GAS_FOR_EXTERNAL_CALL, "More gas is required");
         let user = env::predecessor_account_id();
         let balance = env::attached_deposit();
         let new_balance = self.get_balance(&user) + balance;
         self.set_account(&user, &new_balance);
 
-        re_entrancy::ext(receiver_id)
+        let promise = re_entrancy::ext(receiver_id)
             .with_attached_deposit(balance).with_static_gas(env::prepaid_gas() - GAS_FOR_EXTERNAL_CALL)
-            .reentrancey()
-            .then(
+            .reentrancy();
+            
+        return promise.then(
                 Self::ext(env::current_account_id())
                 .with_static_gas(GAS_FOR_RESOLVE_CALLBACK)
                 .deposit_callback(user, balance),

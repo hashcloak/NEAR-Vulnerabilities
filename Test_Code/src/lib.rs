@@ -9,7 +9,7 @@ pub struct Contract {
 
 #[near_bindgen]
 impl Contract {
-    pub fn reentrancey(&mut self) {
+    pub fn reentrancy(&mut self) {
         self.called += 1;
     }
 
