@@ -6,3 +6,5 @@ Test_Code/target
 Test_Code/Cargo.lock
 overflow/target
 overflow/Cargo.lock
+phishing/target
+phishing/Cargo.lock
