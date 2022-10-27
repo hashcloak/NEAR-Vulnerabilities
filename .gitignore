@@ -12,5 +12,7 @@ phishing/attack/target
 phishing/attack/Cargo.lock
 Million_Small_Deposits/target
 Million_Small_Deposits/Cargo.lock
-error_prone_pattern/target
-error_prone_pattern/Cargo.lock
+error_prone_pattern/Bug_1/target
+error_prone_pattern/Bug_1/Cargo.lock
+error_prone_pattern/Bug_2/target
+error_prone_pattern/Bug_2/Cargo.lock

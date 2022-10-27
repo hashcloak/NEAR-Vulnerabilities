@@ -8,6 +8,11 @@ pub struct Contract {
     m: UnorderedMap<u8, String>,
 }
 
+// Bug 1: Should not replace any collections without clearing state, this will reset any
+// metadata, such as the number of elements, leading to bugs. If you replace the collection
+// with something with a different prefix, it will be functional, but you will lose any
+// previous data and the old values will not be removed from storage.
+        
 
 #[near_bindgen]
 impl Contract {
@@ -24,13 +29,6 @@ impl Contract {
         assert_eq!(self.m.get(&1), Some("test".to_string()), "we are testing collections with {:#?} and {:#?}", self.m.get(&1), Some("test".to_string()));
 
         return self.m.get(&1) == Some("test".to_string());
-        // Bug 1: Should not replace any collections without clearing state, this will reset any
-        // metadata, such as the number of elements, leading to bugs. If you replace the collection
-        // with something with a different prefix, it will be functional, but you will lose any
-        // previous data and the old values will not be removed from storage.
-        // m = UnorderedMap::new(b"m");
-        // assert!(m.is_empty(), "is_empty value: {}", m.is_empty());
-        // assert_eq!(m.get(&1), Some("test".to_string()), "we are testing collections with {:#?} and {:#?}", m.get(&1), Some("test".to_string()));
     }
 
     // pub fn ep_re_initialize(&mut self) {
