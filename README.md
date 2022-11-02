@@ -1,3 +1,36 @@
+# Getting Started
+- Follow this [instructions](https://doc.rust-lang.org/book/ch01-01-installation.html#installation) to install rust. 
+- Add the WASM (WebAssembly) target to our toolchain
+```shell
+rustup target add wasm32-unknown-unknown
+```
+- Move to the specific directory of specific vulnerability and Compile the contract:
+```bash
+cargo build --target wasm32-unknown-unknown --release
+```
+- Follow below to steps to deploy the contract on chain:
+    - First Login your Account
+    ```bash
+    near login
+    ```
+    - Giving Our Contract a Name
+    ```bash
+    near create-account CONTRACT_NAME.ACCOUNT_ID --masterAccount ACCOUNT_ID
+    ```
+    - Deploy the contract
+    ```Shell
+    near deploy --wasmFile target/wasm32-unknown-unknown/release/<filename>.wasm --accountId CONTRACT_ID --initFunction init_function_name --initArgs '{"key": "value", "key": value}'
+    ```
+- Interacting with the contract
+    - Calling a function
+    ```bash
+    near call CONTRACT_ID function_name_to_call '{"key": "value", "key": value}' --accountId ACCOUNT_ID
+    ```
+**Now you can play with the function to reproduce the issues.**
+
+
+# List of vulnerabilities
+
 ### [Re-Entrancy (Not Working - Need a way to reproduce)](https://github.com/hashcloak/NEAR-Vulnerabilities/tree/main/reentrancy)
 - Trying to Reproduce re-entrancy in NEAR smart contract
 - Ref: [reentrancy](https://docs.near.org/develop/contracts/security/callbacks)
